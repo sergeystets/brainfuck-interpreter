@@ -8,7 +8,7 @@ import brainfuck.command.Command;
 
 public class EndLoop implements Command {
 
-    private int startsAt;
+    private final int startsAt;
 
     public EndLoop(int startsAt) {
         this.startsAt = startsAt;

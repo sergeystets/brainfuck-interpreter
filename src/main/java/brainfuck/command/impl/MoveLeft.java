@@ -1,18 +1,16 @@
 package brainfuck.command.impl;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import brainfuck.Memory;
 import brainfuck.command.Command;
 
 public class MoveLeft implements Command {
 
     @Override
-    public void run(StringBuilder resultAggregator,
-                    AtomicInteger commandIdx,
-                    AtomicInteger memoryIdx,
-                    char[] memory,
-                    List<Command> commands) {
-        memoryIdx.decrementAndGet();
+    public Optional<Character> run(Memory memory, AtomicInteger commandPointer) {
+        memory.decrementPointer();
+        return Optional.empty();
     }
 }

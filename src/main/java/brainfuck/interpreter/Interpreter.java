@@ -1,8 +1,10 @@
 package brainfuck.interpreter;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import brainfuck.Memory;
 import brainfuck.command.Command;
 import brainfuck.parser.CommandParser;
 import brainfuck.utils.Assert;
@@ -24,17 +26,17 @@ public class Interpreter {
 
         List<Command> commands = commandParser.parse(program);
 
-        AtomicInteger commandIdx = new AtomicInteger();
-        AtomicInteger memoryIdx = new AtomicInteger();
-        char[] memory = new char[memorySize];
-        StringBuilder resultAggregator = new StringBuilder();
+        AtomicInteger commandPointer = new AtomicInteger();
+        Memory memory = new Memory(memorySize);
+        StringBuilder output = new StringBuilder();
 
-        while (commandIdx.get() < commands.size()) {
-            Command command = commands.get(commandIdx.get());
-            command.run(resultAggregator, commandIdx, memoryIdx, memory, commands);
-            commandIdx.incrementAndGet();
+        while (commandPointer.get() < commands.size()) {
+            Command command = commands.get(commandPointer.get());
+            Optional<Character> outputCharacter = command.run(memory, commandPointer);
+            outputCharacter.ifPresent(output::append);
+            commandPointer.incrementAndGet();
         }
 
-        return resultAggregator.toString();
+        return output.toString();
     }
 }

@@ -1,18 +1,16 @@
 package brainfuck.command.impl;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import brainfuck.Memory;
 import brainfuck.command.Command;
 
 public class Decrement implements Command {
 
     @Override
-    public void run(StringBuilder resultAggregator,
-                    AtomicInteger commandIdx,
-                    AtomicInteger memoryIdx,
-                    char[] memory,
-                    List<Command> commands) {
-        memory[memoryIdx.get()]--;
+    public Optional<Character> run(Memory memory, AtomicInteger commandPointer) {
+        memory.putValue((byte) (memory.getValue() - 1));
+        return Optional.empty();
     }
 }
